@@ -1,4 +1,4 @@
-public enum TokenType {
+public enum TokenType: Codable {
 
     public enum Derivation: String, CaseIterable {
         case bip44
@@ -134,6 +134,17 @@ public enum TokenType {
         case .spl(let address): return (type: "spl", reference: address)
         case .unsupported(let type, let reference): return (type: type, reference: reference)
         }
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(id)
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let id = try container.decode(String.self)
+        self = TokenType.init(id: id) ?? .native
     }
 
 }

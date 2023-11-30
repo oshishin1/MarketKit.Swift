@@ -1,4 +1,4 @@
-public struct Token {
+public struct Token: Codable{
     public let coin: Coin
     public let blockchain: Blockchain
     public let type: TokenType
@@ -21,6 +21,31 @@ public struct Token {
 
     public var fullCoin: FullCoin {
         FullCoin(coin: coin, tokens: [self])
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case
+        coin,
+        blockchain,
+        type,
+        decimals
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(coin, forKey: .coin)
+        try container.encode(blockchain, forKey: .blockchain)
+        try container.encode(type.id, forKey: .type)
+        try container.encode(decimals, forKey: .decimals)
+
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.coin = try container.decode(Coin.self, forKey: .coin)
+        self.blockchain = try container.decode(Blockchain.self, forKey: .blockchain)
+        self.type = try container.decode(TokenType.self, forKey: .type)
+        self.decimals = try container.decode(Int.self, forKey: .decimals)
     }
 
 }

@@ -1,7 +1,7 @@
 import GRDB
 import ObjectMapper
 
-public class Coin: Record, Decodable, ImmutableMappable {
+public class Coin: Record, Codable, ImmutableMappable {
     static let tokens = hasMany(TokenRecord.self)
 
     public let uid: String

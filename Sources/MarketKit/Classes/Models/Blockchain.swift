@@ -1,4 +1,4 @@
-public struct Blockchain {
+public struct Blockchain: Codable {
     public let type: BlockchainType
     public let name: String
     public let explorerUrl: String?
@@ -11,6 +11,28 @@ public struct Blockchain {
 
     public var uid: String {
         type.uid
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case
+        type,
+        name,
+        explorerUrl
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(type.uid, forKey: .type)
+        try container.encode(name, forKey: .name)
+        try container.encode(explorerUrl, forKey: .explorerUrl)
+
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.type = try container.decode(BlockchainType.self, forKey: .type)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.explorerUrl = try? container.decode(String.self, forKey: .explorerUrl)
     }
 
 }

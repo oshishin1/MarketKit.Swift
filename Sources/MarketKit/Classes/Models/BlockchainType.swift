@@ -1,4 +1,4 @@
-public enum BlockchainType {
+public enum BlockchainType:Codable{
     case bitcoin
     case bitcoinCash
     case ecash
