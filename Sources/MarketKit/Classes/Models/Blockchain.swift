@@ -30,7 +30,8 @@ public struct Blockchain: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(BlockchainType.self, forKey: .type)
+        let typeString = try container.decode(String.self, forKey: .type)
+        self.type = BlockchainType.init(uid: typeString)
         self.name = try container.decode(String.self, forKey: .name)
         self.explorerUrl = try? container.decode(String.self, forKey: .explorerUrl)
     }

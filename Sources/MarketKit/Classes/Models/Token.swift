@@ -44,7 +44,8 @@ public struct Token: Codable{
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.coin = try container.decode(Coin.self, forKey: .coin)
         self.blockchain = try container.decode(Blockchain.self, forKey: .blockchain)
-        self.type = try container.decode(TokenType.self, forKey: .type)
+        let typeString = try container.decode(String.self, forKey: .type)
+        self.type = TokenType.init(id: typeString) ?? .native
         self.decimals = try container.decode(Int.self, forKey: .decimals)
     }
 
